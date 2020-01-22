@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>SYMBNB - {% block title %}{% endblock %}</title>
+        <link rel="stylesheet" href="css/bootstrap.min.css"/>
+        {% block stylesheets %}{% endblock %}
+    </head>
+    <body>
+               
+        {% block body %}{% endblock %}
+
+        <script src="js/jquery.js"></script>
+        <script src="js/bootstrap.min.js"></script>
+        <script src="js/popper.min.js"></script>
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
