@@ -13,8 +13,7 @@
          */
         public function home()
         {
-            Return $this->render(
-                'home.html.twig'
-            );
+            // la route "/" renvoie la page "home.html.twig" qui est la page d'accueil
+            Return $this->render('home.html.twig');
         }
     }

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nos annonces{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h1 class="my-3">Voici nos annonces !</h1>
+        <div class="row">
+            {% for ad in ads %}
+                {% set url = path('ads_show', {'slug': ad.slug}) %}
+                <div class="col-md-4">
+                    <div class="card bg-light mb-3">
+                        <div class="card-header text-center">
+                            {{ ad.rooms }} chambres, <strong>{{ ad.price }}&euro; /nuit</strong><br/>
+                            <small>Pas encore noté !</small>
+                        </div>
+                        
+                        {# {{ path('ads_show', {'slug': ad.slug}) }} = lien vers la route dont le nom est 
+                            ads_show avec pour paramètre 'slug' dans le controller 'AdController.php' sur la
+                            fonction 'show' pour afficher l'annonce liée au slug indiqué #}
+                        <a href="{{ url }}">
+                            <img src="{{ ad.coverImage }}" alt="Image de l'appartement"
+                                style="height:100px; width:100%; display: block"/>
+                        </a>
+                        
+    
+                        <div class="card-body">
+                            <h4 class="card-title">
+                                <a href="{{ url }}">{{ ad.title }}</a>
+                            </h4>
+                            <p class="card-text">
+                                <a href="{{ url }}">{{ ad.introduction }}</a>
+                            </p>
+                            <a href="{{ url }}" class="btn btn-primary btn-lg" 
+                                role="button">En savoir plus &raquo;</a>
+                        </div>
+                    </div>
+                </div>
+        {% endfor %}
+        </div>
+    </div>
+{% endblock %}

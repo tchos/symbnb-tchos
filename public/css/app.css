@@ -1,0 +1,21 @@
+div.carousel-caption
+{
+    text-shadow: 3px 3px 3px rgba(0, O, 0, 0.5);
+}
+div.container
+{
+    margin-top: 20px;
+}
+
+div.ad-title
+{
+    padding: 2em;
+    background-size: cover;
+    background-position: center;
+}
+
+div.ad-title h1, div.ad-title p
+{
+    /* color: #000; */
+    text-shadow: 3px 3px 3px rgba(0, O, 0, 0.5);
+}
