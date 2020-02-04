@@ -67,6 +67,9 @@ class AdController extends AbstractController
                 $manager->persist($image);
             }
 
+            // L'auteur de l'annonce sera le user connecté
+            $ad->setAuthor($this->getUser());
+
             $manager->persist($ad);
             $manager->flush();
 
@@ -121,6 +124,7 @@ class AdController extends AbstractController
             $manager->persist($ad);
             $manager->flush();
 
+            // Message d'alerte qui confirmera que l'annonce a été créée avec succès
             $this->addFlash(
                 'success',
                 "Les modifications de l'annonce <strong>{$ad->getTitle()}</strong> ont bien été enregistrées !"

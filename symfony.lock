@@ -108,6 +108,9 @@
     "egulias/email-validator": {
         "version": "2.1.14"
     },
+    "friendsoftwig/twigcs": {
+        "version": "v3.2.2"
+    },
     "fzaninotto/faker": {
         "version": "v1.9.1"
     },
@@ -137,6 +140,9 @@
     },
     "phpdocumentor/type-resolver": {
         "version": "1.0.1"
+    },
+    "pimple/pimple": {
+        "version": "v3.2.3"
     },
     "psr/cache": {
         "version": "1.0.1"

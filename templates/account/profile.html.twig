@@ -1,0 +1,25 @@
+{# Héritage du template de base #}
+{% extends 'base.html.twig' %}
+
+{# Surcharge du block "title" du template de base #}
+{% block title %}Modifez votre profile{% endblock %}
+
+{# On prévient symfony que l'on veut use un thème particulier se trouve dans ce fichier #}
+
+{# Surcharge du block "body" du template de base #}
+{% block body %}
+    <div class="container">
+        <h1 class="h1">Modification du profile </h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+
+        <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+
+        {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{# code javascripts pour ajouter dynamiquement des champs #}
+{% block javascripts %}
+    <script src="/js/ad.js"></script>
+{% endblock %}
