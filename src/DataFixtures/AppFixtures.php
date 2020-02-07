@@ -6,6 +6,7 @@ use App\Entity\Ad;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Image;
+use App\Entity\Roles;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
@@ -24,6 +25,25 @@ class AppFixtures extends Fixture
         // $product = new Product();
         // $manager->persist($product);
         $faker = Factory::create("Fr-fr");
+
+        // création du rôle d'admin
+        $adminRole = new Roles();
+        $adminRole->setTitle('ROLE_ADMIN');
+        $manager->persist($adminRole);
+
+        /** création d'un user qui aura, en plus du rôle par défaut ('ROLE_USER') défini l'entité User,
+         * le rôle d'admin
+         * */ 
+        $adminUser = new User();
+        $adminUser->setFirstName('Tchos')
+                  ->setLastName('Le Milanais')
+                  ->setEmail('kwenol@yahoo.fr')
+                  ->setHash($this->encoder->encodePassword($adminUser, 'password'))
+                  ->setPicture('https://randomuser.me/api/portraits/men/12.jpg')
+                  ->setIntroduction($faker->sentence())
+                  ->setDescription("<p>".join("</p><p>", $faker->paragraphs(3))."</p>")
+                  ->addUserRole($adminRole);
+        $manager->persist($adminUser);
         
         // gestion des utilisateurs
         $users = [];

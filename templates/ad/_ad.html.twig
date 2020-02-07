@@ -24,6 +24,11 @@
             </p>
             <a href="{{ url }}" class="btn btn-primary btn-lg" 
                 role="button">En savoir plus &raquo;</a>
+            {# Ce bouton ne s'affichera que lorsque sile user connecté en est l'auteur de l'annonce #}
+            {% if app.user and app.user == ad.author %}
+                <a href="{{ path('ads_edit', {'slug':ad.slug}) }}" class="btn btn-secondary">
+                    Editer l'annonce</a>
+            {% endif %}
         </div>
     </div>
 </div>

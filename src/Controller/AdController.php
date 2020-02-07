@@ -6,10 +6,13 @@ use App\Entity\Ad;
 use App\Form\AdType;
 use App\Entity\Image;
 use App\Repository\AdRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class AdController extends AbstractController
@@ -37,11 +40,12 @@ class AdController extends AbstractController
     /**
      * Permet de créer une annonce
      * @Route("/ads/new", name="ads_create")
+     * @IsGranted("ROLE_USER")
      * 
      * @return Response
      */
     //public function create(Request $request, ObjectManager $manager)
-    public function create(Request $request)
+    public function create(Request $request, EntityManagerInterface $manager)
     {
         $ad = new Ad();
 
@@ -59,7 +63,7 @@ class AdController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid())
         {
-            $manager = $this->getDoctrine()->getManager();
+            //$manager = $this->getDoctrine()->getManager();
 
             foreach($ad->getImages() as $image)
             {
@@ -96,9 +100,11 @@ class AdController extends AbstractController
     /**
      * Permet de modifier une annonce
      * @Route("/ads/{slug}/edit", name="ads_edit")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", 
+     * message="Cette annonce ne vous appartient pas, vous ne pouvez pas la modifier")
      * @return Response
      */
-    public function edit(Ad $ad, Request $request)
+    public function edit(Ad $ad, Request $request, EntityManagerInterface $manager)
     {
         // Création d'un constructeur de formulaire en symfony
         $form = $this->createForm(AdType::class, $ad);
@@ -113,7 +119,7 @@ class AdController extends AbstractController
         */
         if($form->isSubmitted() && $form->isValid())
         {
-            $manager = $this->getDoctrine()->getManager();
+            //$manager = $this->getDoctrine()->getManager();
 
             foreach($ad->getImages() as $image)
             {
@@ -174,4 +180,24 @@ class AdController extends AbstractController
         *    ]);
         *} 
      */
+
+    /**
+     * Permet de supprimer une annonce
+     * @Route("/ads/{slug}/delete", name="ads_delete")
+     * @Security("is_granted('ROLE_USER') and user === ad.getAuthor()", 
+     * message="Vous n'avez pas le droit d'accéder à cette ressource.")
+     * @param Ad $ad
+     * @param ObjectManager $manager
+     * @return Response
+     */
+    public function delete(Ad $ad, EntityManagerInterface $manager)
+    {
+        $manager->remove($ad);
+        $manager->flush();
+
+        // fenêtre d'alerte
+        $this->addFlash('success',"L'annonce <strong>{$ad->getTitle()}</strong> a bien été supprimée !");
+
+        return $this->redirectToRoute('ads_index');
+    }
 }
