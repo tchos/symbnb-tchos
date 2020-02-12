@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="/css/bootstrap-datepicker.min.css"/>
+{% endblock %}
+
+{% block title %}Les réservations de {{ user.fullName }}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <h2>Mes réservations</h2>
+        <div class="alert alert-info mt-5">
+            <p>Retrouvez ci-dessous vos réservations passées et à venir</p>
+        </div>
+
+        {# app = variable globale de symfony #}
+        {% for booking in app.user.bookings %}
+            {% set ad = booking.ad %}
+            <div class="row mt-3">
+                <div class="col-4">
+                    <img src="{{ ad.coverImage }}" alt="Photo de l'annonce de {{ ad.title }}" 
+                        class="img-fluid">
+                </div>
+                <div class="col-8">
+                    <h4>{{ ad.title }}</h4>
+                    <p>
+                        Réservation n°<strong>{{ booking.id }}</strong><br>
+                        Du {{ booking.startDate | date('d/m/Y') }} 
+                        au {{ booking.endDate | date('d/m/Y') }} ({{ booking.amount }} &euro;)
+                    </p>
+                    <a href="{{ path('booking_show', {'id': booking.id}) }}" class="btn btn-info">
+                        Plus d'informations &raquo;
+                    </a>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}

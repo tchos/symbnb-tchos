@@ -187,4 +187,17 @@ class AccountController extends AbstractController
             'user' => $this->getUser()
         ]);
     }
+
+    /**
+     * Permet d'afficher les réservations effectuées par l'utilisateur connecté
+     * 
+     * @Route("/account/bookings", name="account_bookings")
+     * @return Response
+     */
+    public function bookings()
+    {
+        return $this->render('account/bookings.html.twig', [
+            'user' => $this->getUser()
+        ]);
+    }
 }
