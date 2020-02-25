@@ -10,15 +10,49 @@
 {# Surcharge du block "body" du template de base #}
 {% block body %}
     <div class="container">
-        <h1 class="h1">Inscrivez-vous sur notre site !</h1>
+        <h1 class="my-5">Inscrivez-vous sur notre site !</h1>
 
         {# Affichage du formulaire créé avec symfony#}
         {{ form_start(form) }}
-
-        {{ form_widget(form) }} 
-
-        <button type="submit" class="btn btn-primary">Confimez l'inscription</button>
-
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h3 class="alert-heading">
+                            Informations générales
+                        </h3>
+                        <hr>
+                        {{ form_row(form.firstName) }}
+                        {{ form_row(form.lastName) }}
+                        {{ form_row(form.email) }}
+                        {{ form_row(form.picture) }}
+                    </div>
+                    <div class="alert alert-light">
+                        <h3 class="alert-heading">
+                            Mot de passe
+                        </h3>
+                        <hr>
+                        {{ form_row(form.hash) }}
+                        {{ form_row(form.passwordConfirm) }}
+                        <hr>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h3 class="alert-heading">
+                            Détails
+                        </h3>
+                        <hr>
+                        {{ form_row(form.introduction) }}
+                        {{ form_row(form.description) }}
+                        <hr>
+                        <p>Vous y êtes presque confirmez votre inscription et rejoignez nous !</p>
+                        <button type="submit" class="btn btn-success">
+                            <i class="fas fa-check"></i>
+                            Confimez l'inscription
+                        </button>
+                    </div>
+                </div>
+            </div>
         {{ form_end(form) }}
     </div>
 {% endblock %}

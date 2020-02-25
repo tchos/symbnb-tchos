@@ -4,6 +4,7 @@ namespace App\DataFixtures;
 
 use App\Entity\Ad;
 use App\Entity\Booking;
+use App\Entity\Comment;
 use Faker\Factory;
 use App\Entity\User;
 use App\Entity\Image;
@@ -79,7 +80,7 @@ class AppFixtures extends Fixture
         }
 
         // Gestion des annonces
-        for($i=0; $i < 12; $i++)
+        for($i=0; $i < 30; $i++)
         {
             $ad = new Ad();
 
@@ -141,6 +142,18 @@ class AppFixtures extends Fixture
                         ->setComment($comment);
 
                 $manager->persist($booking);
+
+                // Gestion des commentaires sur les annonces
+                if(mt_rand(0,1))
+                {
+                    $comment = new Comment();
+                    $comment->setAd($ad)
+                            ->setAuthor($booker)
+                            ->setRating(mt_rand(1,5))
+                            ->setContent($faker->paragraph());
+
+                    $manager->persist($comment);
+                }
             }
 
             $manager->persist($ad);

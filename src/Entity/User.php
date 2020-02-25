@@ -16,7 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * L'email doit être unique chez chaque user
  * @UniqueEntity(
  *      fields = {"email"},
- *      message = "Un autre utilisateur s'est déjà isncrit avec cette adresse email, merci de la modifier."
+ *      message = "Un autre utilisateur s'est déjà inscrit avec cette adresse email, merci de la modifier."
  * )
  */
 class User implements UserInterface
@@ -69,7 +69,7 @@ class User implements UserInterface
     /**
      * @ORM\Column(type="string", length=255)
      * // Taille minimale de l'introduction et message en cas d'erreur
-     * @Assert\Length(min=10, minMessage="Votre introcution doit avoir au moins 10 caractères !")
+     * @Assert\Length(min=10, minMessage="Votre introduction doit avoir au moins 10 caractères !")
      */
     private $introduction;
 
@@ -101,6 +101,11 @@ class User implements UserInterface
     private $bookings;
 
     /**
+     * @ORM\OneToMany(targetEntity="App\Entity\Comment", mappedBy="author", orphanRemoval=true)
+     */
+    private $comments;
+
+    /**
      * Permet d'initialiser un slug
      * 
      * @ORM\PrePersist
@@ -121,6 +126,7 @@ class User implements UserInterface
         $this->ads = new ArrayCollection();
         $this->userRoles = new ArrayCollection();
         $this->bookings = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -338,6 +344,37 @@ class User implements UserInterface
             // set the owning side to null (unless already changed)
             if ($booking->getBooker() === $this) {
                 $booking->setBooker(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Comment[]
+     */
+    public function getComments(): Collection
+    {
+        return $this->comments;
+    }
+
+    public function addComment(Comment $comment): self
+    {
+        if (!$this->comments->contains($comment)) {
+            $this->comments[] = $comment;
+            $comment->setAuthor($this);
+        }
+
+        return $this;
+    }
+
+    public function removeComment(Comment $comment): self
+    {
+        if ($this->comments->contains($comment)) {
+            $this->comments->removeElement($comment);
+            // set the owning side to null (unless already changed)
+            if ($comment->getAuthor() === $this) {
+                $comment->setAuthor(null);
             }
         }
 

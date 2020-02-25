@@ -8,7 +8,7 @@
 
 {% block body %}
     <div class="container">
-        <h1>Réservez pour l'annonce: {{ ad.title }}</h1>
+        <h1>Réservez pour l'annonce: <em>{{ ad.title }}</em> </h1>
         <p>
             Vous êtes sur le point de réserver le bien de <strong>{{ ad.author.fullName }}</strong>, 
             dites-nous tout, on s'occupe du reste !
@@ -16,7 +16,7 @@
 
         {{ form_start(form) }}
             <div class="alert alert-light">
-                <h2>Commencez par nous dire quelles sont les dates qui vous intéressent !</h2>
+                <h4>Commencez par nous dire quelles sont les dates qui vous intéressent !</h4>
                 <div class="row">
                     <div class="col">
                         {{ form_row(form.startDate) }}
@@ -26,8 +26,8 @@
                     </div>
                 </div>
 
-                <h4>Montant du séjour: <span id="amount">...</span> &euro;</h4>
-                <span id="days">0</span> nuit(s) à {{ ad.price }} / nuit
+                <h4 class="mt-3">Montant du séjour: <span id="amount">...</span> &euro;</h4>
+                <span id="days">0</span> nuit(s) à {{ ad.price | number_format(2, ',', ' ') }} &euro; par nuit
 
                 <h4 class="mt-3">Vous avez un commentaire ?</h4>
                 {{ form_row(form.comment) }}
@@ -42,11 +42,12 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js">
+    <script src="/js/bootstrap-datepicker.min.js">
 	</script>
     <script>
         $(document).ready(function(){
             $('#booking_startDate, #booking_endDate').datepicker({
+				todayHighlight: true,
                 format: 'dd/mm/yyyy',
                 datesDisabled: [
                     {% for day in ad.notAvailableDays %}

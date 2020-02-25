@@ -14,10 +14,42 @@
 
         {# Affichage du formulaire créé avec symfony#}
         {{ form_start(form) }}
-
+            <div class="row">
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h4>Informations générales</h4>
+                        <hr>
+                        {{ form_row(form.title) }}
+                        {{ form_row(form.slug) }}
+                        {{ form_row(form.price) }}
+                        {{ form_row(form.rooms) }}
+                    </div>
+                    <div class="alert alert-light">
+                        <h4>Détails de l'annonce</h4>
+                        <hr>
+                        {{ form_row(form.introduction) }}
+                        {{ form_row(form.content) }}
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="alert alert-light">
+                        <h4>Images de l'annonce</h4>
+                        <hr>
+                        {{ form_row(form.coverImage) }}
+                        {{ form_row(form.images) }}
+                    </div>
+                </div>
+            </div>
         {{ form_widget(form) }} 
 
-        <button type="submit" class="btn btn-primary">Créer la nouvelle annonce</button>
+        <div class="alert alert-success clearfix">
+            <h3 class="alert-heading">Sauvegarder mon annonce</h3>
+            <p>Vous êtes sur le point de créer votre nouvelle annonce, nous sommes super fier de vous !</p>
+            <button type="submit" class="btn btn-primary float-right">
+                <i class="fas fa-check"></i>
+                Créer la nouvelle annonce
+            </button>
+        </div>
 
         {{ form_end(form) }}
     </div>

@@ -3,8 +3,8 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Doctrine\ORM\Mapping\PrePersist;
+use Doctrine\ORM\Mapping\HasLifecycleCallbacks;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -34,16 +34,17 @@ class Booking
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\Date(message="Attention, la date d'arrivée doit être au bon format !")
-     * @Assert\GreaterThan("today", message="La date d'arrivée doit être ultérieur à la date d'aujourd'hui")
+     * @Assert\DateTime(message="Attention, la date d'arrivée doit être au bon format !")
+     * @Assert\GreaterThan("today", message="La date d'arrivée doit être ultérieur à la date d'aujourd'hui",
+     * groups={"front"})
      */
     private $startDate;
 
     /**
      * @ORM\Column(type="datetime")
-     * @Assert\Date(message="Attention, la date de départ doit être au bon format !")
-     * @Assert\GreaterThan(propertyPath="startDate", message="La date de départ doit être plus éloignée
-     que la date d'arrivée !")
+     * @Assert\DateTime(message="Attention, la date de départ doit être au bon format !")
+     * @Assert\GreaterThan(propertyPath="startDate", 
+     *  message="La date de départ doit être plus éloignée que la date d'arrivée !")
      */
     private $endDate;
 
@@ -66,6 +67,7 @@ class Booking
      * CallBack appelé à chaque fois que l'on veut créer une réservation
      * 
      * @ORM\PrePersist
+     * @ORM\PreUpdate
      *
      * @return void
      */
@@ -95,7 +97,7 @@ class Booking
         $bookingDays = $this->getDays();
 
         $formatDay = function($day){
-            return new \DateTime(date("Y-m-d", $day));
+            return new \DateTime(date('Y-m-d', $day));
         };
 
         // Tableau des chaines de caractères des journées
@@ -114,15 +116,16 @@ class Booking
 
     /**
      * Permet d'avoir un tableau des jours qui correspondent à ma réservation
-     *
-     * @return array Un tableau d'objets DateTime représentant les jours d'occupation
+     * Un tableau d'objets DateTime représentant les jours d'occupation
+     * 
+     * @return array 
      */
     public function getDays()
     {
         $resultat = range(
             $this->startDate->getTimestamp(),
             $this->endDate->getTimestamp(),
-            24*60*60
+            24 * 60 * 60
         );
 
         $days = array_map(function($dayTimestamp){
