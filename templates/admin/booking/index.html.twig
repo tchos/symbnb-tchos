@@ -16,6 +16,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% set bookings = paginator.data %}
                 {% for booking in bookings %}
                     <tr>
                         <td>{{ booking.id }}</td>
@@ -37,5 +38,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        {#{% include 'admin/partials/pagination.html.twig' with {'route': 'admin_booking_index'} %}#}
+        {{ paginator.display() }}
     </div>
 {% endblock %}

@@ -3,8 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Ad;
+use App\Entity\Booking;
 use App\Form\AdType;
 use App\Repository\AdRepository;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,12 +17,20 @@ class AdminAdController extends AbstractController
     /**
      * Cette page affichera la liste des annonces
      * 
-     * @Route("/admin/ads", name="admin_ads_index")
+     * @Route("/admin/ads/{page<\d+>?1}", name="admin_ads_index")
      */
-    public function index(AdRepository $repo)
+    public function index(AdRepository $repo, $page, Paginator $paginator)
     {
+        // Service pour l'entité "Booking"
+        $paginator->setEntityClass(Ad::class)
+                  ->setPage($page);
+
+        // liste des annonces: $ads = $paginator->getData();
+
+        // nombre de pages: $pages = $paginator->getPages();
+
         return $this->render('admin/ad/index.html.twig', [
-            'ads' => $repo->findAll(),
+            'paginator' => $paginator,
         ]);
     }
 

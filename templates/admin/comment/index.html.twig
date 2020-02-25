@@ -19,6 +19,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% set comments = paginator.data %}
                 {% for comment in comments %}
                     <tr>
                         <td>{{ comment.id }}</td>
@@ -44,5 +45,7 @@
                 {% endfor %}
             </tbody>
         </table>
+        {#{% include 'admin/partials/pagination.html.twig' with {'route': 'admin_comment_index'} %}#}
+        {{ paginator.display() }}
     </div>
 {% endblock %}

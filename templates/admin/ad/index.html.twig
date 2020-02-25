@@ -17,6 +17,7 @@
                 </tr>
             </thead>
             <tbody>
+                {% set ads = paginator.data %}
                 {% for ad in ads %}
                     <tr>
                         <td>{{ ad.id }}</td>
@@ -45,5 +46,8 @@
                 {% endfor %}
             </tbody>
         </table>
+
+         {#{% include 'admin/partials/pagination.html.twig' with {'route': 'admin_ads_index'} %}#}
+         {{ paginator.display() }}
     </div>
 {% endblock %}

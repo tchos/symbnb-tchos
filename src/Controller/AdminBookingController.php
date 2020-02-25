@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Form\AdminBookingType;
 use App\Repository\BookingRepository;
+use App\Service\Paginator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,15 +16,16 @@ class AdminBookingController extends AbstractController
     /**
      * Permet à l'admin de lister les réservations
      * 
-     * @Route("/admin/bookings", name="admin_booking_index")
+     * @Route("/admin/bookings/{page<\d+>?1}", name="admin_booking_index")
      */
-    public function index(BookingRepository $repo)
+    public function index(BookingRepository $repo, $page, Paginator $paginator)
     {
-        // Récupération de la liste des réservations
-        $bookings = $repo->findAll();
+        // Service pour l'entité "Booking"
+        $paginator->setEntityClass(Booking::class)
+            ->setPage($page);
 
         return $this->render('admin/booking/index.html.twig', [
-            'bookings' => $bookings
+            'paginator' => $paginator,
         ]);
     }
 
